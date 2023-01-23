@@ -10,11 +10,13 @@ CONFIG += c++11
 
 SOURCES += \
     connectform.cpp \
+    device.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     connectform.h \
+    device.h \
     mainwindow.h
 
 FORMS += \

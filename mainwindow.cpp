@@ -6,7 +6,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    connect(ui->connectAction, &QAction::triggered, this, &MainWindow::on_connectAction_clicked);
+    connect(ui->connectAction, &QAction::triggered, this, &MainWindow::connectActionClicked);
     connectForm = new ConnectForm(this);
 }
 
@@ -15,7 +15,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_connectAction_clicked()
+void MainWindow::connectActionClicked()
 {
     connectForm->show();
 }
