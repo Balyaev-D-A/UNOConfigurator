@@ -17,7 +17,7 @@ public:
     ~MainWindow();
 
 public slots:
-        void connectActionClicked();
+        void onConnectActionClicked();
 
 private:
     Ui::MainWindow *ui;

@@ -76,7 +76,7 @@
 color: rgb(0, 0, 0);</string>
                </property>
                <property name="text">
-                <string>1,56 Е-6&lt;br/&gt;Бк/м3</string>
+                <string>[1]&lt;br/&gt;1,56 Е-6&lt;br/&gt;Бк/м3</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
@@ -498,7 +498,7 @@ color: rgb(0, 0, 0);</string>
      <x>0</x>
      <y>0</y>
      <width>1012</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
