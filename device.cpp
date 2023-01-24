@@ -1,5 +1,7 @@
 #include "device.h"
+#include "util.h"
 #include <QVariant>
+#include <QTextCodec>
 
 Device::Device(QObject *parent)
     : QObject{parent}
@@ -38,15 +40,39 @@ void Device::Connect(QString port, uchar address)
 
 void Device::onModbusReplyFinished()
 {
+    if (m_ModbusReply->error()) return;
     switch (m_currentOperation) {
     case CONNECT:
-        if (!m_ModbusReply->error()){
-            m_failedRequestCount = 0;
-            m_connected = true;
-            emit connectSuccess(QString::fromLocal8Bit((char*)m_ModbusReply->result().values().data()));
-        }
+        m_failedRequestCount = 0;
+        m_connected = true;
+        m_pCommandThread->create(&Device::commandFunc);
+        m_pCommandThread->start();
+        emit connectSuccess(cp1251_to_utf((char*)m_ModbusReply->result().values().data()));
         break;
     default:
         return;
     }
+}
+
+void Device::commandFunc()
+{
+    forever {
+        if (!m_commandQueue.count() || m_currentOperation != NONE) continue;
+        m_currentOperation = m_commandQueue.dequeue();
+        switch (m_currentOperation){
+        case READINFO:
+            processReadInfo();
+            break;
+        case READCONFIG:
+            processReadConfig();
+            break;
+        case WRITECONFIG:
+            processWriteConfig();
+        }
+    }
+}
+
+void Device::processReadInfo()
+{
+
 }

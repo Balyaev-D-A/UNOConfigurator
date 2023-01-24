@@ -108,9 +108,7 @@ enum OperationCode {
     CONNECT,
     READCONFIG,
     WRITECONFIG,
-    READINFO,
-    READCOMMAND,
-    WRITECOMMAND
+    READINFO
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -120,10 +118,11 @@ public:
     explicit Device(QObject *parent = nullptr);
     ~Device();
     void Connect(QString port, quint8 address);
-    void deviceReadConfRequest();
-    void deviceReadInfoRequest();
+    void sendReadConfRequest();
+    void sendReadInfoRequest();
     TDeviceConf currentConfig();
     TDeviceInfo currentInfo();
+    void setCurrentConfig(const TDeviceConf&);
     bool isConnected();
 private:
     void commandFunc();
@@ -131,6 +130,9 @@ private:
     QModbusDataUnit makeWriteConfRequest(TDeviceConf conf);
     QModbusDataUnit makeReadInfoRequest();
     QModbusDataUnit makeConnectRequest();
+    void processReadInfo();
+    void processReadConfig();
+    void processWriteConfig();
     bool m_connected = false;
     quint8 m_address = 0;
     quint8 m_failedRequestCount = 0;

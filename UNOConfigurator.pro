@@ -17,7 +17,8 @@ SOURCES += \
 HEADERS += \
     connectform.h \
     device.h \
-    mainwindow.h
+    mainwindow.h \
+    util.h
 
 FORMS += \
     connectform.ui \
