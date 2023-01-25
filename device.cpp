@@ -6,73 +6,125 @@
 Device::Device(QObject *parent)
     : QObject{parent}
 {
-    m_pDevice = new QModbusRtuSerialMaster();
-    m_pCommandThread = new QThread(this);
+    m_pPort = new QSerialPort();
 }
 
 Device::~Device()
 {
-    m_pDevice->deleteLater();
-    m_pCommandThread->deleteLater();
+    m_pPort->deleteLater();
 }
 
-void Device::Connect(QString port, uchar address)
+
+
+bool Device::connectToDevice(QString port, uchar address)
 {
-    if (m_pDevice->state() == QModbusDevice::ConnectedState) return;
-    m_pDevice->setConnectionParameter(QModbusDevice::SerialPortNameParameter, port);
-    m_pDevice->setConnectionParameter(QModbusDevice::SerialDataBitsParameter, QSerialPort::Data8);
-    m_pDevice->setConnectionParameter(QModbusDevice::SerialBaudRateParameter, QSerialPort::Baud19200);
-    m_pDevice->setConnectionParameter(QModbusDevice::SerialParityParameter, QSerialPort::NoParity);
-    m_pDevice->setConnectionParameter(QModbusDevice::SerialStopBitsParameter, QSerialPort::OneStop);
-    m_pDevice->setTimeout(100);
-    if (!m_pDevice->connectDevice()) {
-        emit connectFail(m_pDevice->errorString());
-        return;
+    m_pPort->setPortName(port);
+    m_pPort->setBaudRate(QSerialPort::Baud19200);
+    m_pPort->setDataBits(QSerialPort::Data8);
+    m_pPort->setStopBits(QSerialPort::OneStop);
+    m_pPort->setParity(QSerialPort::NoParity);
+    m_pPort->setFlowControl(QSerialPort::NoFlowControl);
+    if (!m_pPort->open(QIODevice::ReadWrite)){
+        m_errorString = "Ошибка открытия порта: " + m_pPort->errorString();
+        return false;
     }
     m_address = address;
-    m_ModbusReply =  m_pDevice->sendReadRequest(makeConnectRequest(), address);
-    if (!m_ModbusReply->isFinished()){
-        m_currentOperation = CONNECT;
-        connect(m_ModbusReply, &QModbusReply::finished, this, &Device::onModbusReplyFinished);
-        connect(m_ModbusReply, &QModbusReply::errorOccurred, this, &Device::onModbusReplyErrorOccured);
+    char *buffer = nullptr;
+    if (!readHoldingRegisters(0x1170, 1, buffer)) {
+        return false;
     }
+    free(buffer);
+    m_errorString = NOERROR;
+    return true;
 }
 
-void Device::onModbusReplyFinished()
+bool Device::readHoldingRegisters(quint16 start, quint16 count, char *result)
 {
-    if (m_ModbusReply->error()) return;
-    switch (m_currentOperation) {
-    case CONNECT:
-        m_failedRequestCount = 0;
-        m_connected = true;
-        m_pCommandThread->create(&Device::commandFunc);
-        m_pCommandThread->start();
-        emit connectSuccess(cp1251_to_utf((char*)m_ModbusReply->result().values().data()));
-        break;
-    default:
-        return;
+    if (!m_pPort->isOpen()) {
+        m_errorString = "Соединение не установлено";
+        return false;
     }
+
+    QByteArray req;
+    req.append(m_address);
+    req.append(0x03);
+    req.append((char) start >> 8);
+    req.append((char) start & 0xFF);
+    req.append((char) count >> 8);
+    req.append((char) count & 0xFF);
+    quint16 crc = CalculateCRC16(req.data(), 6);
+    req.append((char) crc & 0xFF);
+    req.append((char) crc >> 8);
+    if (m_pPort->write(req) < 0){
+        m_errorString = "Ошибка записи в порт: " + m_pPort->errorString();
+        return false;
+    }
+    if (!m_pPort->waitForBytesWritten(100)){
+        m_errorString = "Таймаут при записи в порт.";
+        return false;
+    }
+    if (!m_pPort->waitForReadyRead(500)) {
+        m_errorString = "Истекло время ожидания ответа от устройства.";
+        return false;
+    }
+    QByteArray response = m_pPort->readAll();
+    if (response.data()[0] != m_address) {
+        m_errorString = "Неправильный адрес устройства в ответе.";
+        return false;
+    }
+    if (response.data()[1] != 0x03) {
+        m_errorString = "Неправильный код функции в ответе.";
+        return false;
+    }
+    int data_count = response[2];
+    if (data_count != count) {
+        m_errorString = "Неверная длина ответа.";
+        return false;
+    }
+    crc = ((quint16)(response[response.length()-1]) << 8) + response[response.length()-2];
+    if (crc != CalculateCRC16(response.data(), response.length()-2)) {
+        m_errorString = "Ошибка контрольной суммы.";
+        return false;
+    }
+    result = (char *) malloc(data_count);
+    memcpy(result, response.data()+3, data_count);
+    m_errorString = NOERROR;
+    return true;
 }
 
-void Device::commandFunc()
+bool Device::getCurrentInfo(Device::TDeviceInfo *devInfo)
 {
-    forever {
-        if (!m_commandQueue.count() || m_currentOperation != NONE) continue;
-        m_currentOperation = m_commandQueue.dequeue();
-        switch (m_currentOperation){
-        case READINFO:
-            processReadInfo();
-            break;
-        case READCONFIG:
-            processReadConfig();
-            break;
-        case WRITECONFIG:
-            processWriteConfig();
+    char* buff = (char *) devInfo;
+
+    if (!readHoldingRegisters(0x00, 0x20, buff)) {
+        return false;
+    }
+    if (!readHoldingRegisters(0x00, 0x20, buff+20)) {
+        return false;
+    }
+    if (!readHoldingRegisters(0x00, 0x14, buff+40)) {
+        return false;
+    }
+    if (!readHoldingRegisters(0x00, 0x20, buff+54)) {
+        return false;
+    }
+    if (!readHoldingRegisters(0x00, 0x20, buff+74)) {
+        return false;
+    }
+
+    return true;
+}
+
+bool Device::getCurrentConfig(Device::TDeviceConf *devConf)
+{
+    char* buff = (char *) devConf;
+    for (int i = 0; i < 8; ++i)
+        if (!readHoldingRegisters(0x1000+i*40, 0x0028, buff+i*40))
+        {
+            return false;
         }
+    if (!readHoldingRegisters(0x1140, 0x0030, buff+0x140)) {
+        return false;
     }
-}
-
-void Device::processReadInfo()
-{
-
+    return true;
 }

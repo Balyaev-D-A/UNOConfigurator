@@ -3,10 +3,8 @@
 
 #include <QObject>
 #include <QSerialPort>
-#include <QtSerialBus/QModbusDataUnit>
-#include <QtSerialBus/QModbusRtuSerialMaster>
-#include <QQueue>
-#include <QThread>
+
+#define NOERROR "Нет ошибки."
 
 class Device : public QObject
 {
@@ -103,57 +101,28 @@ typedef struct {
     float	faCoef[6];
 } TERM_COEFF;
 
-enum OperationCode {
-    NONE,
-    CONNECT,
-    READCONFIG,
-    WRITECONFIG,
-    READINFO
-};
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     Q_OBJECT
 public:
     explicit Device(QObject *parent = nullptr);
     ~Device();
-    void Connect(QString port, quint8 address);
-    void sendReadConfRequest();
-    void sendReadInfoRequest();
-    TDeviceConf currentConfig();
-    TDeviceInfo currentInfo();
-    void setCurrentConfig(const TDeviceConf&);
+    bool connectToDevice(QString port, quint8 address);
+    bool getCurrentInfo(Device::TDeviceInfo *devInfo);
+    bool getCurrentConfig(Device::TDeviceConf *devConf);
     bool isConnected();
 private:
-    void commandFunc();
-    QModbusDataUnit makeReadConfRequest();
-    QModbusDataUnit makeWriteConfRequest(TDeviceConf conf);
-    QModbusDataUnit makeReadInfoRequest();
-    QModbusDataUnit makeConnectRequest();
-    void processReadInfo();
-    void processReadConfig();
-    void processWriteConfig();
+    QSerialPort *m_pPort;
     bool m_connected = false;
+    int m_failedRequestCount = 0;
     quint8 m_address = 0;
-    quint8 m_failedRequestCount = 0;
-    OperationCode m_currentOperation = NONE;
-    QModbusRtuSerialMaster *m_pDevice;
-    QModbusReply *m_ModbusReply;
-    TDeviceConf m_currentConfig;
-    TDeviceInfo m_currentInfo;
-    QQueue<OperationCode> m_commandQueue;
-    QThread *m_pCommandThread;
+    QString m_errorString;
+    bool readHoldingRegisters(quint16 start, quint16 count, char *result);
+
 private slots:
-    void onModbusReplyFinished();
-    void onModbusReplyErrorOccured(QModbusDevice::Error error);
 
 signals:
-    void connectSuccess(QString devName);
-    void connectFail(QString message);
-    void onDeviceConfRequestSuccess();
-    void onDeviceConfRequestError();
-    void onDeviceInfoRequestSuccess();
-    void onDeviceInfoRequestError();
+
 };
 
 #endif // DEVICE_H
