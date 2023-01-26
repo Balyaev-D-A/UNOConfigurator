@@ -11,14 +11,15 @@ class ConnectForm;
 
 class ConnectForm : public QWidget
 {
-    typedef  struct {
-        QString port;
-        char address;
-    } ConnInfo;
-
     Q_OBJECT
 
 public:
+
+    struct ConnectionInfo {
+        QString port;
+        char address;
+    };
+
     explicit ConnectForm(QWidget *parent = nullptr);
     ~ConnectForm();
 
@@ -38,7 +39,7 @@ protected:
     void showEvent(QShowEvent *e);
 
 signals:
-    void connChoosed(ConnInfo ci);
+    void connChoosed(ConnectionInfo ci);
 };
 
 #endif // CONNECTFORM_H

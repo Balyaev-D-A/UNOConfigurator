@@ -6,7 +6,7 @@ ConnectForm::ConnectForm(QWidget *parent) :
     ui(new Ui::ConnectForm)
 {
     ui->setupUi(this);
-
+    setWindowModality(Qt::ApplicationModal);
 }
 
 ConnectForm::~ConnectForm()
@@ -38,7 +38,7 @@ void ConnectForm::on_cancelButton_clicked()
 
 void ConnectForm::on_okButton_clicked()
 {
-    ConnInfo ci;
+    ConnectionInfo ci;
     ci.address = ui->addressBox->value();
     ci.port = ui->portBox->currentText();
     emit connChoosed(ci);
