@@ -1,11 +1,16 @@
 #ifndef UTIL_H
 #define UTIL_H
-
+#include <string.h>
 #include <QString>
 #include <QTextCodec>
 #include <QTextEncoder>
 #include <QTime>
 #include <QApplication>
+
+#define LoByte(x) (char)(x)
+#define HiByte(x) (char)(x >> 8)
+#define MakeWord(hi, lo) ((quint16)hi << 8) + lo
+#define SwapBytes(x) ((quint16)LoByte(x) << 8) + HiByte(x)
 
 // Таблица для быстрого подсчета CRC-16
 const
@@ -101,7 +106,7 @@ char* utf_to_cp1251(QString text)
 {
     QTextEncoder *enc = QTextCodec::codecForName("Windows-1251")->makeEncoder();
     char* result = (char*) malloc(strlen(enc->fromUnicode(text).data()+1));
-    strcpy_s(result, strlen(enc->fromUnicode(text).data()+1), enc->fromUnicode(text).data());
+    strcpy(result, enc->fromUnicode(text).data());
     delete enc;
     return result;
 }

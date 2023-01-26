@@ -65,13 +65,13 @@ bool Device::readHoldingRegisters(quint16 start, quint16 count, char *result)
     QByteArray req;
     req.append(m_address);
     req.append(0x03);
-    req.append((char) (start >> 8));
-    req.append((char) (start & 0xFF));
-    req.append((char) (count >> 8));
-    req.append((char) (count & 0xFF));
+    req.append(HiByte(start));
+    req.append(LoByte(start));
+    req.append(HiByte(count));
+    req.append(LoByte(count));
     quint16 crc = CalculateCRC16(req.data(), 6);
-    req.append((char) (crc & 0xFF));
-    req.append((char) (crc >> 8));
+    req.append(LoByte(crc));
+    req.append(HiByte(crc));
     if (m_pPort->write(req) < 0){
         m_errorString = "Ошибка записи в порт: " + m_pPort->errorString();
         return false;
@@ -123,6 +123,7 @@ bool Device::readHoldingRegisters(quint16 start, quint16 count, char *result)
             break;
         case 0x10:
             error = "Шлюз неправильно настроен или перегружен запросами.";
+            break;
         case 0x11:
             error = "Slave устройства нет в сети или от него нет ответа.";
             break;
@@ -155,15 +156,15 @@ bool Device::writeHoldingRegisters(quint16 start, quint16 count, char* data)
     QByteArray req;
     req.append(m_address);
     req.append(0x10);
-    req.append((char) start >> 8);
-    req.append((char) start & 0xFF);
-    req.append((char) count >> 8);
-    req.append((char) count & 0xFF);
+    req.append(HiByte(start));
+    req.append(LoByte(start));
+    req.append(HiByte(count));
+    req.append(LoByte(count));
     req.append(count*2);
     req.append(data);
     quint16 crc = CalculateCRC16(req.data(), req.size());
-    req.append((char) crc &0xFF);
-    req.append((char) crc >> 8);
+    req.append(LoByte(crc));
+    req.append(HiByte(crc));
     if (!m_pPort->write(req.data(), req.size())) {
         m_errorString = "Ошибка записи в порт: " + m_pPort->errorString();
         return false;
@@ -215,6 +216,7 @@ bool Device::writeHoldingRegisters(quint16 start, quint16 count, char* data)
             break;
         case 0x10:
             error = "Шлюз неправильно настроен или перегружен запросами.";
+            break;
         case 0x11:
             error = "Slave устройства нет в сети или от него нет ответа.";
             break;
