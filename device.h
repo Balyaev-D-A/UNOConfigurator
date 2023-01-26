@@ -101,6 +101,38 @@ typedef struct {
     float	faCoef[6];
 } TERM_COEFF;
 
+enum ECommandCode {
+        ccGetCurrentInfo			=  0,
+        ccFullTest					=  1,
+        ccImitationMode				=  2,
+        ccNormalMode				=  3,
+        ccPutConfig					=  4,
+        ccGetConfig					=  5,
+        ccSetDateTime				=  6,
+        ccOpenValve					=  7,
+        ccCloseValve				=  8,
+        ccSetValveAutoMode			=  9,
+        ccSetAddress				= 15,
+        ccSetIdentificator			= 17,
+        ccSetExConst				= 21,
+        ccGetExConst				= 22,
+        ccSetTermCoeff				= 23,
+        ccGetTermCoeff				= 24,
+        ccReadArchive				= 25,
+        ccStopArchive				= 26,
+        ccPutImitVal				= 50,
+        ccGetImitVal				= 51
+    };
+    enum EResultsCode {
+        rcSuccess 		= 0x0000,
+        rcInProgress 	= 0x0001,
+        rcUnknownError  = 0xFFFF,
+        rcI2CError 		= 0xFFFE,
+        rcWrEEPROMError = 0xFFFD,
+        rcRdEEPROMError = 0xFFFC,
+        rcNoResponse 	= 0xFFFB
+    };
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     Q_OBJECT
@@ -108,9 +140,13 @@ public:
     explicit Device(QObject *parent = nullptr);
     ~Device();
     bool connectToDevice(QString port, quint8 address);
+    void disconnectDevice();
     bool getCurrentInfo(Device::TDeviceInfo *devInfo);
     bool getCurrentConfig(Device::TDeviceConf *devConf);
+    bool putConfig(Device::TDeviceConf *devConf);
+    bool saveConfigToEEPROM();
     bool isConnected();
+    QString errorString();
 private:
     QSerialPort *m_pPort;
     bool m_connected = false;
@@ -118,6 +154,8 @@ private:
     quint8 m_address = 0;
     QString m_errorString;
     bool readHoldingRegisters(quint16 start, quint16 count, char *result);
+    bool writeHoldingRegisters(quint16 start, quint16 count, char *data);
+    bool executeCommand(quint16 *cmdData, quint16 cmdSize);
 
 private slots:
 
