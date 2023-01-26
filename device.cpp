@@ -29,17 +29,16 @@ bool Device::connectToDevice(QString port, uchar address)
         return false;
     }
     m_address = address;
-    char *buffer = nullptr;
-    if (!readHoldingRegisters(0x1170, 1, buffer)) {
+    quint16 buffer;
+    if (!readHoldingRegisters(0x1170, 1, (char *)&buffer)) {
         m_pPort->close();
         return false;
     }
-    if (((quint16) *buffer) != address) {
+    if (buffer != address) {
         m_errorString = "Неподдерживаемое устройство.";
         m_pPort->close();
         return false;
     }
-    free(buffer);
     m_connected = true;
     m_errorString = NOERROR;
     return true;
@@ -66,13 +65,13 @@ bool Device::readHoldingRegisters(quint16 start, quint16 count, char *result)
     QByteArray req;
     req.append(m_address);
     req.append(0x03);
-    req.append((char) start >> 8);
-    req.append((char) start & 0xFF);
-    req.append((char) count >> 8);
-    req.append((char) count & 0xFF);
+    req.append((char) (start >> 8));
+    req.append((char) (start & 0xFF));
+    req.append((char) (count >> 8));
+    req.append((char) (count & 0xFF));
     quint16 crc = CalculateCRC16(req.data(), 6);
-    req.append((char) crc & 0xFF);
-    req.append((char) crc >> 8);
+    req.append((char) (crc & 0xFF));
+    req.append((char) (crc >> 8));
     if (m_pPort->write(req) < 0){
         m_errorString = "Ошибка записи в порт: " + m_pPort->errorString();
         return false;
