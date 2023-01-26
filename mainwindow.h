@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "connectform.h"
+#include "device.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -18,10 +19,13 @@ public:
 
 public slots:
         void onConnectActionClicked();
+        void onDisconnectActionClicked();
+        void onConnectFormConnChoosed(ConnectForm::ConnectionInfo ci);
 
 private:
     Ui::MainWindow *ui;
     ConnectForm *connectForm;
+    Device *device;
 
 };
 #endif // MAINWINDOW_H
