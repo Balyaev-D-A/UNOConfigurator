@@ -4,7 +4,8 @@
 #include <QString>
 #include <QTextCodec>
 #include <QTextEncoder>
-
+#include <QTime>
+#include <QApplication>
 
 // Таблица для быстрого подсчета CRC-16
 const
@@ -105,5 +106,13 @@ char* utf_to_cp1251(QString text)
     return result;
 }
 
+void delay(int millisecondsToWait)
+{
+    QTime dieTime = QTime::currentTime().addMSecs(millisecondsToWait);
+    while(QTime::currentTime() < dieTime)
+    {
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+    }
+}
 
 #endif // UTIL_H
