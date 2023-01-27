@@ -9,7 +9,7 @@
 
 #define LoByte(x) (char)(x)
 #define HiByte(x) (char)(x >> 8)
-#define MakeWord(hi, lo) ((quint16)hi << 8) + lo
+#define MakeWord(hi, lo) ((quint16)(hi & 0xFF) << 8) | (lo & 0xFF)
 #define SwapBytes(x) ((quint16)LoByte(x) << 8) + HiByte(x)
 
 // Таблица для быстрого подсчета CRC-16

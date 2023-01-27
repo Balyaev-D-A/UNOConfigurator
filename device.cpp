@@ -85,7 +85,7 @@ bool Device::readHoldingRegisters(quint16 start, quint16 count, char *result)
         return false;
     }
     QByteArray response = m_pPort->readAll();
-    crc = ((quint16)(response[response.length()-1]) << 8) + response[response.length()-2];
+    crc = MakeWord(response[response.length()-1], response[response.length()-2]);
     if (crc != CalculateCRC16(response.data(), response.length()-2)) {
         m_errorString = "Ошибка контрольной суммы.";
         return false;

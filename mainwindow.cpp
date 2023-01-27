@@ -7,10 +7,11 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     connectForm = new ConnectForm(this);
-    device = new Device(this);
+    m_device = new Device(this);
     connect(ui->connectAction, &QAction::triggered, this, &MainWindow::onConnectActionClicked);
     connect(ui->disconnectAction, &QAction::triggered, this, &MainWindow::onDisconnectActionClicked);
     connect(connectForm, &ConnectForm::connChoosed, this, &MainWindow::onConnectFormConnChoosed);
+    connect(&updateInfoTimer, &QTimer::timeout, this, &MainWindow::onUpdateInfoTimerTimeout);
 }
 
 MainWindow::~MainWindow()
@@ -25,13 +26,22 @@ void MainWindow::onConnectActionClicked()
 
 void MainWindow::onDisconnectActionClicked()
 {
-    device->disconnectDevice();
+    m_device->disconnectDevice();
 }
 
 void MainWindow::onConnectFormConnChoosed(ConnectForm::ConnectionInfo ci)
 {
-    if (!device->connectToDevice(ci.port, ci.address)) {
+    if (!m_device->connectToDevice(ci.port, ci.address)) {
         ui->logEdit->document()->setHtml(ui->logEdit->document()->toHtml() +
-                                         QString("<span style=\"color:red\">Ошибка подключения к устройству: %1<br/></span>").arg(device->errorString()));
+                                         QString("<span style=\"color:red\">Ошибка подключения к устройству: %1<br/></span>").arg(m_device->errorString()));
+        return;
     }
+    updateInfoTimer.start(1000);
+}
+
+void MainWindow::onUpdateInfoTimerTimeout()
+{
+    if (!m_device->getCurrentInfo(&m_devInfo))
+        ui->logEdit->document()->setHtml(ui->logEdit->document()->toHtml() +
+                                         QString("<span style=\"color:red\">Ошибка получения информации: %1<br/></span>").arg(m_device->errorString()));
 }

@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QTimer>
 #include "connectform.h"
 #include "device.h"
 
@@ -21,11 +22,15 @@ public slots:
         void onConnectActionClicked();
         void onDisconnectActionClicked();
         void onConnectFormConnChoosed(ConnectForm::ConnectionInfo ci);
+        void onUpdateInfoTimerTimeout();
 
 private:
     Ui::MainWindow *ui;
     ConnectForm *connectForm;
-    Device *device;
+    Device *m_device;
+    Device::TDeviceInfo m_devInfo;
+    Device::TDeviceConf m_devConf;
+    QTimer updateInfoTimer;
 
 };
 #endif // MAINWINDOW_H
