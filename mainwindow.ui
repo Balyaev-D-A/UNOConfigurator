@@ -384,7 +384,7 @@ color: rgb(0, 0, 0);</string>
       </widget>
       <widget class="QWidget" name="configTab">
        <attribute name="title">
-        <string>Конфигурация</string>
+        <string> Конфигурация каналов</string>
        </attribute>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
@@ -398,7 +398,7 @@ color: rgb(0, 0, 0);</string>
            </attribute>
            <layout class="QHBoxLayout" name="horizontalLayout_4">
             <item>
-             <widget class="ChannelConfigWidget" name="widget" native="true"/>
+             <widget class="ChannelConfigWidget" name="widget_1" native="true"/>
             </item>
            </layout>
           </widget>
@@ -554,7 +554,77 @@ color: rgb(0, 0, 0);</string>
           </widget>
          </widget>
         </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <item>
+           <spacer name="verticalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="readDeviceButton">
+            <property name="text">
+             <string>Прочитать из устройства</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="saveDeviceButton">
+            <property name="text">
+             <string>Сохранить в устройство</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Line" name="line">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="readFileButton">
+            <property name="text">
+             <string>Прочитать из файла</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="saveFileButton">
+            <property name="text">
+             <string>Сохранить в файл</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
        </layout>
+      </widget>
+      <widget class="QWidget" name="tab_18">
+       <attribute name="title">
+        <string>Конфигурация устройства</string>
+       </attribute>
       </widget>
      </widget>
     </item>

@@ -24,10 +24,15 @@ public:
     quint16 getSignalers();
     quint16 getContacts();
 
+private slots:
+    void on_typeBox_currentIndexChanged(int index);
+
 private:
     Ui::ChannelConfigWidget *ui;
     QIntValidator intValidator;
     QDoubleValidator doubleValidator;
+    void fillTypeBox();
+    void fillUOMBox();
 };
 
 #endif // CHANNELCONFIGWIDGET_H

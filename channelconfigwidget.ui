@@ -46,7 +46,7 @@
          </widget>
         </item>
         <item row="1" column="0">
-         <widget class="QLabel" name="label_3">
+         <widget class="QLabel" name="uomLabel">
           <property name="text">
            <string>Размерность</string>
           </property>
@@ -63,7 +63,7 @@
          </widget>
         </item>
         <item row="2" column="0">
-         <widget class="QLabel" name="label_4">
+         <widget class="QLabel" name="lowLabel">
           <property name="text">
            <string>Нижняя граница диапазона</string>
           </property>
@@ -73,7 +73,7 @@
          <widget class="QLineEdit" name="lowEdit"/>
         </item>
         <item row="3" column="0">
-         <widget class="QLabel" name="label_5">
+         <widget class="QLabel" name="highLabel">
           <property name="text">
            <string>Верхняя граница диапазона</string>
           </property>
@@ -83,7 +83,7 @@
          <widget class="QLineEdit" name="highEdit"/>
         </item>
         <item row="4" column="0">
-         <widget class="QLabel" name="label_6">
+         <widget class="QLabel" name="maxcpsLabel">
           <property name="text">
            <string>Максимальная скорость счета [имп/сек]</string>
           </property>
@@ -93,7 +93,7 @@
          <widget class="QLineEdit" name="maxcpsEdit"/>
         </item>
         <item row="5" column="0">
-         <widget class="QLabel" name="label_7">
+         <widget class="QLabel" name="coeffLabel">
           <property name="text">
            <string>Коэффициент пересчета</string>
           </property>
@@ -103,7 +103,7 @@
          <widget class="QLineEdit" name="coeffEdit"/>
         </item>
         <item row="6" column="0">
-         <widget class="QLabel" name="label_8">
+         <widget class="QLabel" name="backgroundLabel">
           <property name="text">
            <string>Значение фона [имп/с]</string>
           </property>
@@ -113,7 +113,7 @@
          <widget class="QLineEdit" name="backgroundEdit"/>
         </item>
         <item row="7" column="0">
-         <widget class="QLabel" name="label_9">
+         <widget class="QLabel" name="deadtimeLabel">
           <property name="text">
            <string>&quot;Мёртвое&quot; время [с]</string>
           </property>
@@ -123,7 +123,7 @@
          <widget class="QLineEdit" name="deadtimeEdit"/>
         </item>
         <item row="8" column="0">
-         <widget class="QLabel" name="label_10">
+         <widget class="QLabel" name="controltimeLabel">
           <property name="text">
            <string>Время контроля по фону [с]</string>
           </property>
@@ -133,7 +133,7 @@
          <widget class="QLineEdit" name="controltimeEdit"/>
         </item>
         <item row="9" column="0">
-         <widget class="QLabel" name="label_11">
+         <widget class="QLabel" name="maxtimeLabel">
           <property name="text">
            <string>Максимальное время измерения [c]</string>
           </property>
@@ -143,7 +143,7 @@
          <widget class="QLineEdit" name="maxmeastimeEdit"/>
         </item>
         <item row="10" column="0">
-         <widget class="QLabel" name="label_12">
+         <widget class="QLabel" name="alarmLabel">
           <property name="text">
            <string>Предупредительный порог</string>
           </property>
@@ -153,7 +153,7 @@
          <widget class="QLineEdit" name="alarmEdit"/>
         </item>
         <item row="11" column="0">
-         <widget class="QLabel" name="label_13">
+         <widget class="QLabel" name="emergencyLabel">
           <property name="text">
            <string>Аварийный порог</string>
           </property>
@@ -181,7 +181,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox">
+    <widget class="QGroupBox" name="signalersGroup">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
        <horstretch>0</horstretch>
@@ -498,7 +498,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_2">
+    <widget class="QGroupBox" name="contactsGroup">
      <property name="title">
       <string>Сухие контакты</string>
      </property>
