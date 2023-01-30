@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->disconnectAction, &QAction::triggered, this, &MainWindow::onDisconnectActionClicked);
     connect(connectForm, &ConnectForm::connChoosed, this, &MainWindow::onConnectFormConnChoosed);
     connect(&updateInfoTimer, &QTimer::timeout, this, &MainWindow::onUpdateInfoTimerTimeout);
+    m_configWigets.append(ui->)
 }
 
 MainWindow::~MainWindow()
@@ -36,6 +37,10 @@ void MainWindow::onConnectFormConnChoosed(ConnectForm::ConnectionInfo ci)
                                          QString("<span style=\"color:red\">Ошибка подключения к устройству: %1<br/></span>").arg(m_device->errorString()));
         return;
     }
+    if (!m_device->getCurrentConfig(&m_devConf)) {
+        return;
+    }
+    processConfig();
     updateInfoTimer.start(1000);
 }
 

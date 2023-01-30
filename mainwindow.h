@@ -5,6 +5,7 @@
 #include <QTimer>
 #include "connectform.h"
 #include "device.h"
+#include "channelconfigwidget.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -31,6 +32,9 @@ private:
     Device::TDeviceInfo m_devInfo;
     Device::TDeviceConf m_devConf;
     QTimer updateInfoTimer;
+    QList<ChannelConfigWidget *> m_configWigets;
+    void processConfig();
+    void processInfo();
 
 };
 #endif // MAINWINDOW_H
