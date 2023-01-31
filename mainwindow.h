@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QTimer>
+#include <QLabel>
 #include "connectform.h"
 #include "device.h"
 #include "channelconfigwidget.h"
@@ -33,8 +34,11 @@ private:
     Device::TDeviceConf m_devConf;
     QTimer updateInfoTimer;
     QList<ChannelConfigWidget *> m_configWigets;
+    QList<QLabel *> m_chanLabels;
     void processConfig();
     void processInfo();
+    QString detectorString(quint16 code);
+    QString uomStrong(quint16 code);
 
 };
 #endif // MAINWINDOW_H

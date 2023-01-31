@@ -38,7 +38,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -67,8 +67,8 @@
                <property name="font">
                 <font>
                  <pointsize>10</pointsize>
-                 <weight>75</weight>
-                 <bold>true</bold>
+                 <weight>50</weight>
+                 <bold>false</bold>
                 </font>
                </property>
                <property name="styleSheet">
@@ -76,7 +76,7 @@
 color: rgb(0, 0, 0);</string>
                </property>
                <property name="text">
-                <string>[1]&lt;br/&gt;1,56 Е-6&lt;br/&gt;Бк/м3</string>
+                <string>&lt; b&gt;[1]&lt;/b&gt;&lt;br/&gt;1,56 Е-6&lt;br/&gt;Бк/м3</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
@@ -636,7 +636,7 @@ color: rgb(0, 0, 0);</string>
      <x>0</x>
      <y>0</y>
      <width>1012</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
