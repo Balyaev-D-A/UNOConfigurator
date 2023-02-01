@@ -35,10 +35,12 @@ private:
     QTimer updateInfoTimer;
     QList<ChannelConfigWidget *> m_configWigets;
     QList<QLabel *> m_chanLabels;
+    QString m_log;
     void processConfig();
     void processInfo();
     QString detectorString(quint16 code);
-    QString uomStrong(quint16 code);
+    QString uomString(quint16 code);
+    void appendToLog(QString logStr);
 
 };
 #endif // MAINWINDOW_H
