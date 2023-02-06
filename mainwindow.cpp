@@ -253,3 +253,13 @@ void MainWindow::appendToLog(QString logStr)
     m_log.append(logStr);
     ui->logEdit->document()->setHtml(m_log);
 }
+
+void MainWindow::on_readDeviceButton_clicked()
+{
+    if (!m_device->getCurrentConfig(&m_devConf)) {
+        appendToLog(QString("<span style=\"color:red\">Ошибка получения информации: %1<br/></span>").arg(m_device->errorString()));
+        return;
+    }
+    processConfig();
+}
+

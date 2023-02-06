@@ -26,6 +26,9 @@ public slots:
         void onConnectFormConnChoosed(ConnectForm::ConnectionInfo ci);
         void onUpdateInfoTimerTimeout();
 
+private slots:
+        void on_readDeviceButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     ConnectForm *connectForm;
