@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>110</width>
+    <width>111</width>
     <height>56</height>
    </rect>
   </property>
@@ -30,7 +30,7 @@
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">color: rgb(0, 0, 0);</string>
+      <string notr="true"/>
      </property>
      <property name="text">
       <string>[1]:БДРГ-42</string>
