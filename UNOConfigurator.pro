@@ -10,6 +10,7 @@ CONFIG += c++11
 
 SOURCES += \
     channelconfigwidget.cpp \
+    channelinfowidget.cpp \
     connectform.cpp \
     device.cpp \
     main.cpp \
@@ -17,6 +18,7 @@ SOURCES += \
 
 HEADERS += \
     channelconfigwidget.h \
+    channelinfowidget.h \
     connectform.h \
     device.h \
     mainwindow.h \
@@ -24,6 +26,7 @@ HEADERS += \
 
 FORMS += \
     channelconfigwidget.ui \
+    channelinfowidget.ui \
     connectform.ui \
     mainwindow.ui
 

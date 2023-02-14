@@ -30,7 +30,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_configWigets.append(ui->widget_15);
     m_configWigets.append(ui->widget_16);
 
-    m_chanLabels.append(ui->chan1Label);
+/*    m_chanLabels.append(ui->chan1Label);
     m_chanLabels.append(ui->chan2Label);
     m_chanLabels.append(ui->chan3Label);
     m_chanLabels.append(ui->chan4Label);
@@ -45,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_chanLabels.append(ui->chan13Label);
     m_chanLabels.append(ui->chan14Label);
     m_chanLabels.append(ui->chan15Label);
-    m_chanLabels.append(ui->chan16Label);
+    m_chanLabels.append(ui->chan16Label);*/
 }
 
 MainWindow::~MainWindow()
@@ -96,12 +96,12 @@ void MainWindow::processConfig()
 
 void MainWindow::processInfo()
 {
-    QString detName;
-    QString uomString;
-    for (int i=0; i<16; i++)
-    {
-        m_chanLabels[i]->setText(QString("%1").arg(m_devInfo.m_cInfo[0][i].m_fsValue, 0, 'E', 3));
-    }
+//    QString detName;
+//    QString uomString;
+//    for (int i=0; i<16; i++)
+//    {
+//        m_chanLabels[i]->setText(QString("%1").arg(m_devInfo.m_cInfo[0][i].m_fsValue, 0, 'E', 3));
+//    }
 }
 
 QString MainWindow::detectorString(quint16 code)
