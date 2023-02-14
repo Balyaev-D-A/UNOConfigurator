@@ -7,6 +7,7 @@
 #include "connectform.h"
 #include "device.h"
 #include "channelconfigwidget.h"
+#include "channelinfowidget.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -37,7 +38,7 @@ private:
     Device::TDeviceConf m_devConf;
     QTimer updateInfoTimer;
     QList<ChannelConfigWidget *> m_configWigets;
-    QList<QLabel *> m_chanLabels;
+    QList<ChannelInfoWidget *> m_infoWidgets;
     QString m_log;
     void processConfig();
     void processInfo();
