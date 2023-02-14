@@ -95,7 +95,7 @@ bool Device::readHoldingRegisters(quint16 start, quint16 count, char *result)
         return false;
     }
     QString error;
-    if (response.data()[1] & 0x80) {
+    if (response.data()[1] & 0x80) {   //Устройство ответило ошибкой
         switch (response.data()[2]) {
         case 0x01:
             error = "Принятый код функции не может быть обработан.";
@@ -188,7 +188,7 @@ bool Device::writeHoldingRegisters(quint16 start, quint16 count, char* data)
         return false;
     }
     QString error;
-    if (response.data()[1] & 0x80) {
+    if (response.data()[1] & 0x80) {  // Устройство ответило ошибкой
         switch (response.data()[2]) {
         case 0x01:
             error = "Принятый код функции не может быть обработан.";
