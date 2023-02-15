@@ -28,7 +28,7 @@ QString ChannelInfoWidget::detectorString(quint16 code)
 {
     switch(code) {
     case 255:
-        return "";
+        return "Откл.";
     case 1:
         return "БДРГ-18С ч.";
     case 2:
@@ -168,7 +168,18 @@ QString ChannelInfoWidget::uomString(quint16 code)
     }
 }
 
+void ChannelInfoWidget::updateIndication()
+{
+    if (m_config->m_wDetCode == 255) {
+        ui->dataLabel->setStyleSheet("color: rgb(0, 0, 0);\nbackground-color: rgb(0, 0, 0);");
+        return;
+    }
+    ui->dataLabel->setStyleSheet("color: rgb(0, 0, 0);\nbackground-color: rgb(85, 255, 127);");
+    ui->dataLabel->setText(QString("%1 %2").arg(m_info->m_fsValue, 0, 'E', 3).arg(uomString(m_config->m_wUOMCode)));
+}
+
 void ChannelInfoWidget::updateData()
 {
-
+    ui->captionLabel->setText(QString("[%1]: %2").arg(m_chanNum).arg(detectorString(m_config->m_wDetCode)));
+    updateIndication();
 }

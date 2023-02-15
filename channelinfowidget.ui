@@ -41,7 +41,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="mainLabel">
+    <widget class="QLabel" name="dataLabel">
      <property name="font">
       <font>
        <pointsize>10</pointsize>

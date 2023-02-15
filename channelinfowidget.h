@@ -26,6 +26,7 @@ private:
     Device::TChannelInfo * m_info = nullptr;
     QString detectorString(quint16 code);
     QString uomString(quint16 code);
+    void updateIndication();
 };
 
 #endif // CHANNELINFOWIDGET_H
