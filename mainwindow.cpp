@@ -47,7 +47,13 @@ MainWindow::MainWindow(QWidget *parent)
     m_infoWidgets.append(ui->infoWidget15);
     m_infoWidgets.append(ui->infoWidget16);
 
-
+    for (int i=0; i<16; i++)
+    {
+        m_devConf.ChanConf[i].m_wDetCode = 255;
+        m_infoWidgets[i]->setChannelNumber(i+1);
+        m_infoWidgets[i]->setData(&m_devConf.ChanConf[i], &m_devInfo.m_cInfo[0][i]);
+        m_infoWidgets[i]->updateData();
+    }
 }
 
 MainWindow::~MainWindow()
@@ -81,8 +87,10 @@ void MainWindow::onConnectFormConnChoosed(ConnectForm::ConnectionInfo ci)
 
 void MainWindow::onUpdateInfoTimerTimeout()
 {
-    if (!m_device->getCurrentInfo(&m_devInfo))
+    if (!m_device->getCurrentInfo(&m_devInfo)){
         appendToLog(QString("<span style=\"color:red\">Ошибка получения информации: %1<br/></span>").arg(m_device->errorString()));
+        return;
+    }
     processInfo();
 }
 
@@ -98,12 +106,13 @@ void MainWindow::processConfig()
 
 void MainWindow::processInfo()
 {
-//    QString detName;
-//    QString uomString;
-//    for (int i=0; i<16; i++)
-//    {
-//        m_chanLabels[i]->setText(QString("%1").arg(m_devInfo.m_cInfo[0][i].m_fsValue, 0, 'E', 3));
-//    }
+    QString logStr = "";
+    for (int i=0; i<16; i++)
+    {
+        m_infoWidgets[1]->updateData();
+        logStr += QString("%1 ").arg(m_devInfo.m_cInfo[0][i].m_dwState, 16, 2, QLatin1Char('0'));
+    }
+    appendToLog(logStr);
 }
 
 void MainWindow::appendToLog(QString logStr)
