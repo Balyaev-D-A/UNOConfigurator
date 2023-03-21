@@ -11,24 +11,24 @@ class Device : public QObject
     Q_OBJECT
 public:
     // Статусные признаки
-    const quint32 ST_SWITCH		= 0x00000001;
-    const quint32 ST_FAILURE		= 0x00000002;
-    const quint32 ST_SIGNALIZATOR	= 0x00000004;
-    const quint32 ST_VALVE		= 0x00000008;
-    const quint32 ST_VALVE_STATE	= 0x00000010;
-    const quint32 ST_ACTIVE		= 0x00000040;
-    const quint32 ST_NOT_RELIABLE	= 0x00000100;
-    const quint32 ST_IMITATION	= 0x00000200;
-    const quint32 ST_NO_SIGNAL	= 0x00000400;
-    const quint32 ST_EX_RATE		= 0x00000800;
-    const quint32 ST_EX_COMP		= 0x00001000;
-    const quint32 ST_AIR_CONSUM	= 0x00002000;
-    const quint32 ST_EX_LO_RANGE	= 0x00004000;
-    const quint32 ST_EX_HI_RANGE	= 0x00008000;
-    const quint32 ST_EX_LO_LIM1 	= 0x00010000;
-    const quint32 ST_EX_HI_LIM1 	= 0x00020000;
-    const quint32 ST_EX_LO_LIM2 	= 0x00010000;
-    const quint32 ST_EX_HI_LIM2 	= 0x00020000;
+    static const quint32 ST_SWITCH		= 0x00000001;
+    static const quint32 ST_FAILURE		= 0x00000002;
+    static const quint32 ST_SIGNALIZATOR	= 0x00000004;
+    static const quint32 ST_VALVE		= 0x00000008;
+    static const quint32 ST_VALVE_STATE	= 0x00000010;
+    static const quint32 ST_ACTIVE		= 0x00000040;
+    static const quint32 ST_NOT_RELIABLE	= 0x00000100;
+    static const quint32 ST_IMITATION	= 0x00000200;
+    static const quint32 ST_NO_SIGNAL	= 0x00000400;
+    static const quint32 ST_EX_RATE		= 0x00000800;
+    static const quint32 ST_EX_COMP		= 0x00001000;
+    static const quint32 ST_AIR_CONSUM	= 0x00002000;
+    static const quint32 ST_EX_LO_RANGE	= 0x00004000;
+    static const quint32 ST_EX_HI_RANGE	= 0x00008000;
+    static const quint32 ST_EX_LO_LIM1 	= 0x00010000;
+    static const quint32 ST_EX_HI_LIM1 	= 0x00020000;
+    static const quint32 ST_EX_LO_LIM2 	= 0x00010000;
+    static const quint32 ST_EX_HI_LIM2 	= 0x00020000;
 
     enum {iChannelNumb = 16};
 

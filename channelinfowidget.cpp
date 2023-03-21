@@ -174,7 +174,18 @@ void ChannelInfoWidget::updateIndication()
         ui->dataLabel->setStyleSheet("color: rgb(0, 0, 0);\nbackground-color: rgb(0, 0, 0);");
         return;
     }
-    ui->dataLabel->setStyleSheet("color: rgb(0, 0, 0);\nbackground-color: rgb(85, 255, 127);");
+    if (!(m_info->m_dwState & Device::ST_ACTIVE)) {
+        ui->dataLabel->setStyleSheet("color: rgb(0, 0, 0);\nbackground-color: rgb(0, 0, 0);");
+        return;
+    }
+    if (m_info->m_dwState & Device::ST_FAILURE)
+        ui->dataLabel->setStyleSheet("color: yellow; background-color: blue;");
+    else if (m_info->m_dwState & (Device::ST_EX_HI_LIM1 | Device::ST_EX_HI_LIM2))
+        ui->dataLabel->setStyleSheet("color: black; background-color: red;");
+    else if (m_info->m_dwState & (Device::ST_EX_LO_LIM1 | Device::ST_EX_LO_LIM2))
+        ui->dataLabel->setStyleSheet("color: black; background-color: yellow;");
+    else
+        ui->dataLabel->setStyleSheet("color: rgb(0, 0, 0);\nbackground-color: rgb(85, 255, 127);");
     ui->dataLabel->setText(QString("%1 %2").arg(m_info->m_fsValue, 0, 'E', 3).arg(uomString(m_config->m_wUOMCode)));
 }
 
