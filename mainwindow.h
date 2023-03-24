@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QTimer>
 #include <QLabel>
+#include <QCloseEvent>
 #include "connectform.h"
 #include "device.h"
 #include "channelconfigwidget.h"
@@ -30,6 +31,10 @@ public slots:
 private slots:
         void on_readDeviceButton_clicked();
 
+        void on_writeDeviceButton_clicked();
+
+        void on_saveToROMButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     ConnectForm *connectForm;
@@ -40,11 +45,15 @@ private:
     QList<ChannelConfigWidget *> m_configWigets;
     QList<ChannelInfoWidget *> m_infoWidgets;
     QString m_log;
+    bool configNotSaved = false;
     void processConfig();
     void processInfo();
     QString detectorString(quint16 code);
     QString uomString(quint16 code);
     void appendToLog(QString logStr);
+
+protected:
+    void closeEvent(QCloseEvent *event);
 
 };
 #endif // MAINWINDOW_H

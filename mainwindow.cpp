@@ -1,3 +1,4 @@
+#include <QMessageBox>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -130,3 +131,39 @@ void MainWindow::on_readDeviceButton_clicked()
     processConfig();
 }
 
+
+void MainWindow::on_writeDeviceButton_clicked()
+{
+    for (int i=0; i<16; i++)
+    {
+        m_devConf.ChanConf[i] = m_configWigets[i]->getConfig();
+        m_devConf.SignConf[i] = m_configWigets[i]->getSignalers();
+        m_devConf.ContConf[i] = m_configWigets[i]->getContacts();
+        if(!m_device->putConfig(&m_devConf)){
+            appendToLog(QString("<span style=\"color:red\">Ошибка записи конфигурации: %1<br/></span>").arg(m_device->errorString()));
+            return;
+        }
+    }
+    configNotSaved = true;
+}
+
+
+void MainWindow::on_saveToROMButton_clicked()
+{
+    if(!m_device->saveConfigToEEPROM()) {
+        appendToLog(QString("<span style=\"color:red\">Ошибка выполнения команды: %1<br/></span>").arg(m_device->errorString()));
+        return;
+    }
+    configNotSaved = false;
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    if (configNotSaved) {
+        QMessageBox::StandardButton answer = QMessageBox::question(this, "Внимание!!!",
+                                                                   "Конфигурация была записана в оперативную память устройства, "
+                                                                   "но не была созранена в ПЗУ. Вы действительно хотите закрыть программу?");
+        if (answer == QMessageBox::No) return;
+    }
+    QMainWindow::closeEvent(event);
+}
