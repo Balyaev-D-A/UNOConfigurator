@@ -14,7 +14,8 @@ SOURCES += \
     connectform.cpp \
     device.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    settings.cpp
 
 HEADERS += \
     channelconfigwidget.h \
@@ -22,7 +23,8 @@ HEADERS += \
     connectform.h \
     device.h \
     mainwindow.h \
-    util.h
+    util.h \
+    settings.h
 
 FORMS += \
     channelconfigwidget.ui \
