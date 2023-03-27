@@ -63,6 +63,7 @@ bool Device::readHoldingRegisters(quint16 start, quint16 count, char *result)
     }
 
     QByteArray req;
+    QByteArray response;
     req.append(m_address);
     req.append(0x03);
     req.append(HiByte(start));
@@ -80,11 +81,18 @@ bool Device::readHoldingRegisters(quint16 start, quint16 count, char *result)
         m_errorString = "Таймаут при записи в порт.";
         return false;
     }
-    if (!m_pPort->waitForReadyRead(500)) {
+    if (m_pPort->waitForReadyRead(500)) {
+        response = m_pPort->readAll();
+        while(m_pPort->waitForReadyRead(50))
+        {
+            response += m_pPort->readAll();
+        }
+    }
+    else
+    {
         m_errorString = "Истекло время ожидания ответа от устройства.";
         return false;
     }
-    QByteArray response = m_pPort->readAll();
     crc = MakeWord(response[response.length()-1], response[response.length()-2]);
     if (crc != CalculateCRC16(response.data(), response.length()-2)) {
         m_errorString = "Ошибка контрольной суммы.";
@@ -154,6 +162,7 @@ bool Device::writeHoldingRegisters(quint16 start, quint16 count, char* data)
         return false;
     }
     QByteArray req;
+    QByteArray response;
     req.append(m_address);
     req.append(0x10);
     req.append(HiByte(start));
@@ -173,11 +182,16 @@ bool Device::writeHoldingRegisters(quint16 start, quint16 count, char* data)
         m_errorString = "Таймаут при записи в порт.";
         return false;
     }
-    if (!m_pPort->waitForReadyRead(500)) {
+    if (m_pPort->waitForReadyRead(500)) {
+        response = m_pPort->readAll();
+        while (m_pPort->waitForReadyRead(50)) {
+            response += m_pPort->readAll();
+        }
+    }
+    else {
         m_errorString = "Истекло время ожидания ответа от устройства.";
         return false;
     }
-    QByteArray response = m_pPort->readAll();
     crc = ((quint16)(response[response.length()-1]) << 8) + response[response.length()-2];
     if (crc != CalculateCRC16(response.data(), response.length()-2)) {
         m_errorString = "Ошибка контрольной суммы.";
